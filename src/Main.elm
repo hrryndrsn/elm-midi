@@ -1,10 +1,21 @@
-module Main exposing (Model, Msg(..), init, main, subscriptions, update, view)
+port module Main exposing (Model, Msg(..), init, main, playSound, subscriptions, update, view)
 
+import Array
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (class, id)
+import Html.Events exposing (onClick)
+import Json.Decode as Decode
+import Json.Encode as E
 import Task
 import Time
+
+
+
+-- port out
+
+
+port playSound : E.Value -> Cmd msg
 
 
 
@@ -27,6 +38,7 @@ main =
 type alias Cell =
     { id : Int
     , sampleUrl : String
+    , armed : Bool
     }
 
 
@@ -42,6 +54,7 @@ type alias Model =
     , time : Time.Posix
     , beat : Int
     , rows : List Row
+    , counter : Int
     }
 
 
@@ -55,6 +68,7 @@ init _ =
         , initRow 2 "base"
         , initRow 3 "shaker"
         ]
+        0
     , Task.perform AdjustTimeZone Time.here
     )
 
@@ -63,22 +77,22 @@ initRow : Int -> String -> Row
 initRow index url =
     Row index
         url
-        [ Cell 0 url
-        , Cell 1 url
-        , Cell 2 url
-        , Cell 3 url
-        , Cell 4 url
-        , Cell 5 url
-        , Cell 6 url
-        , Cell 7 url
-        , Cell 8 url
-        , Cell 9 url
-        , Cell 10 url
-        , Cell 11 url
-        , Cell 12 url
-        , Cell 13 url
-        , Cell 14 url
-        , Cell 15 url
+        [ Cell 0 url False
+        , Cell 1 url False
+        , Cell 2 url False
+        , Cell 3 url False
+        , Cell 4 url False
+        , Cell 5 url False
+        , Cell 6 url False
+        , Cell 7 url False
+        , Cell 8 url False
+        , Cell 9 url False
+        , Cell 10 url False
+        , Cell 11 url False
+        , Cell 12 url False
+        , Cell 13 url False
+        , Cell 14 url False
+        , Cell 15 url False
         ]
 
 
@@ -89,6 +103,8 @@ initRow index url =
 type Msg
     = Tick Time.Posix
     | AdjustTimeZone Time.Zone
+    | SendPlaySound
+    | ArmCell Int Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -102,6 +118,9 @@ update msg model =
 
                     else
                         0
+
+                -- checkedRows =
+                --     checkRows model.rows
             in
             ( { model
                 | time = newTime
@@ -110,13 +129,86 @@ update msg model =
             , Cmd.none
             )
 
+        SendPlaySound ->
+            ( { model | counter = model.counter + 1 }
+            , playSound (E.int (model.counter + 1))
+            )
+
         AdjustTimeZone newZone ->
             ( { model | zone = newZone }
             , Cmd.none
             )
 
+        ArmCell rowId cellId ->
+            let
+                rowArr =
+                    Array.fromList model.rows
+
+                ri =
+                    Array.get rowId rowArr
+
+                xri =
+                    case ri of
+                        Just a ->
+                            a
+
+                        Nothing ->
+                            Row -1 "" []
+
+                cellArr =
+                    Array.fromList xri.cells
+
+                ci =
+                    Array.get cellId cellArr
+
+                xci =
+                    case ci of
+                        Just a ->
+                            a
+
+                        Nothing ->
+                            Cell -1 "" False
+
+                armed =
+                    case xci.armed of
+                        True ->
+                            { xci | armed = False }
+
+                        False ->
+                            { xci | armed = True }
+
+                updatedCellArr =
+                    Array.set cellId armed cellArr
+
+                updatedRi =
+                    { xri | cells = Array.toList updatedCellArr }
+
+                updatedRowArr =
+                    Array.set rowId updatedRi rowArr
+                        |> Array.toList
+            in
+            ( { model | rows = updatedRowArr }
+            , Cmd.none
+            )
 
 
+
+-- checkRows : List Row -> List String
+-- checkRows rows =
+--     let
+--         mapped =
+--             List.map (\row -> checkRow row []) rows
+--         derp =
+--             Debug.log "mapped" mapped
+--     in
+--     [ "derp" ]
+-- checkRow : Row -> List String
+-- checkRow row =
+--     let
+--         newCells =
+--         cell =
+--             List.map((\cell -> ) )
+--     in
 -- SUBSCRIPTIONS
 
 
@@ -159,17 +251,25 @@ renderRows rows activeCell =
 
 renderRow : Row -> Int -> Html Msg
 renderRow row activeCell =
-    div [ class "row" ] (List.map (\c -> cell c activeCell) row.cells)
+    div [ class "row" ] (List.map (\c -> cell row.id c activeCell) row.cells)
 
 
-cell : Cell -> Int -> Html Msg
-cell cl activeCell =
-    div [ class (renderCellClass cl.id activeCell), id (String.fromInt <| cl.id) ] []
+cell : Int -> Cell -> Int -> Html Msg
+cell rowId cl activeCell =
+    div
+        [ class (renderCellClass cl.id activeCell cl.armed)
+        , id (String.fromInt <| cl.id)
+        , onClick (ArmCell rowId cl.id)
+        ]
+        []
 
 
-renderCellClass : Int -> Int -> String
-renderCellClass index activeCell =
-    if index == activeCell then
+renderCellClass : Int -> Int -> Bool -> String
+renderCellClass index activeCell armed =
+    if armed == True then
+        "cell armed"
+
+    else if index == activeCell then
         "cell active"
 
     else

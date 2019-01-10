@@ -33,3 +33,10 @@ img {
 .cell.active {
   background: red;
 }
+
+
+.armed{
+  background: green;
+}
+
+
