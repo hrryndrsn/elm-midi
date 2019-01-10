@@ -1,0 +1,35 @@
+body {
+  font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  text-align: center;
+  color: #293c4b;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+img {
+  margin: 20px 0;
+  max-width: 200px;
+}
+.container {
+  width: 90vw;
+  margin: 0 auto;
+}
+
+.row {
+  height: 50px;
+  display: grid;
+  gap: 5px;
+  padding-top: 5px;
+  grid-template-columns: repeat(16, 1fr)
+}
+
+.cell {
+  background: black;
+}
+
+.cell.active {
+  background: red;
+}
