@@ -119,8 +119,8 @@ update msg model =
                     else
                         0
 
-                -- checkedRows =
-                --     checkRows model.rows
+                checkedRows =
+                    checkRows model.rows model.beat
             in
             ( { model
                 | time = newTime
@@ -192,24 +192,78 @@ update msg model =
             )
 
 
+checkRows : List Row -> Int -> List String
+checkRows rows beat =
+    let
+        mapped =
+            List.map (\row -> checkRow row beat) rows
 
--- checkRows : List Row -> List String
--- checkRows rows =
---     let
---         mapped =
---             List.map (\row -> checkRow row []) rows
---         derp =
---             Debug.log "mapped" mapped
---     in
---     [ "derp" ]
--- checkRow : Row -> List String
--- checkRow row =
---     let
---         newCells =
---         cell =
---             List.map((\cell -> ) )
---     in
--- SUBSCRIPTIONS
+        toPlay =
+            []
+
+        folded =
+            List.map
+                (\li ->
+                    let
+                        list =
+                            List.map (\row -> row.sampleUrl :: toPlay) li
+                    in
+                    list ++ toPlay
+                )
+                mapped
+
+        filtered =
+            List.filter
+                (\li ->
+                    List.isEmpty li == not True
+                )
+                mapped
+
+        flist =
+            flatten2D filtered
+
+        justSample =
+            List.map
+                (\c ->
+                    c.sampleUrl
+                )
+                flist
+    in
+    justSample
+
+
+flatten2D : List (List a) -> List a
+flatten2D list =
+    List.foldr (++) [] list
+
+
+checkRow : Row -> Int -> List Cell
+checkRow row beat =
+    let
+        playing =
+            List.filter
+                (\ce ->
+                    ce.id == beat
+                )
+                row.cells
+
+        armed =
+            List.filter
+                (\ce ->
+                    ce.armed == True
+                )
+                playing
+    in
+    armed
+
+
+checkCell : Cell -> Int -> Maybe String
+checkCell c beat =
+    if c.id == beat then
+        Just c.sampleUrl
+
+    else
+        Nothing
 
 
 subscriptions : Model -> Sub Msg
