@@ -1,0 +1,11 @@
+{
+  "name": "midi-grid",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/hrryndrsn/elm-midi.git",
+  "author": "hrryndrsn <harryanderson9@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "howler": "^2.1.1"
+  }
+}

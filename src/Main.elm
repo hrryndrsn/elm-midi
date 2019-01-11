@@ -65,8 +65,16 @@ init _ =
         0
         [ initRow 0 "kick"
         , initRow 1 "snare"
-        , initRow 2 "base"
-        , initRow 3 "shaker"
+        , initRow 2 "perc"
+        , initRow 3 "hat"
+        , initRow 4 "perc1"
+        , initRow 5 "perc2"
+        , initRow 6 "perc3"
+        , initRow 7 "perc4"
+        , initRow 8 "fx1"
+        , initRow 9 "tick"
+        , initRow 10 "highWomp"
+        , initRow 11 "lowWomp"
         ]
         0
     , Task.perform AdjustTimeZone Time.here
@@ -303,24 +311,8 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    let
-        hour =
-            String.fromInt (Time.toHour model.zone model.time)
-
-        minute =
-            String.fromInt (Time.toMinute model.zone model.time)
-
-        second =
-            String.fromInt (Time.toSecond model.zone model.time)
-
-        beat =
-            String.fromInt model.beat
-    in
     div [ class "container" ]
-        [ h1 [] [ text (hour ++ ":" ++ minute ++ ":" ++ second) ]
-        , h1 []
-            [ text beat ]
-        , renderRows model.rows model.beat
+        [ renderRows model.rows model.beat
         ]
 
 
