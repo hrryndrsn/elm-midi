@@ -15,7 +15,7 @@ import Time
 -- port out
 
 
-port playSound : E.Value -> Cmd msg
+port playSound : String -> Cmd msg
 
 
 
@@ -103,7 +103,7 @@ initRow index url =
 type Msg
     = Tick Time.Posix
     | AdjustTimeZone Time.Zone
-    | SendPlaySound
+    | SendPlaySound (List String)
     | ArmCell Int Int
 
 
@@ -119,19 +119,40 @@ update msg model =
                     else
                         0
 
-                checkedRows =
+                chckrws =
                     checkRows model.rows model.beat
             in
-            ( { model
-                | time = newTime
-                , beat = newBeat
-              }
-            , Cmd.none
-            )
+            case List.isEmpty chckrws of
+                True ->
+                    ( { model
+                        | time = newTime
+                        , beat = newBeat
+                      }
+                    , Cmd.none
+                    )
 
-        SendPlaySound ->
-            ( { model | counter = model.counter + 1 }
-            , playSound (E.int (model.counter + 1))
+                False ->
+                    let
+                        enc =
+                            E.encode 0 (E.list E.string chckrws)
+                    in
+                    ( { model
+                        | time = newTime
+                        , beat = newBeat
+                      }
+                    , playSound enc
+                    )
+
+        SendPlaySound list ->
+            let
+                arr =
+                    Array.fromList list
+
+                enc =
+                    E.encode 0 (E.list E.string list)
+            in
+            ( model
+            , playSound enc
             )
 
         AdjustTimeZone newZone ->
@@ -190,6 +211,11 @@ update msg model =
             ( { model | rows = updatedRowArr }
             , Cmd.none
             )
+
+
+firePlaySound : String -> Cmd msg
+firePlaySound str =
+    playSound str
 
 
 checkRows : List Row -> Int -> List String
