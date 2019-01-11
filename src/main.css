@@ -2,7 +2,8 @@ body {
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
   margin: 0;
   text-align: center;
-  color: #293c4b;
+  color: hsl(206, 29%, 23%);
+  background:  #494949
 }
 
 h1 {
@@ -16,6 +17,7 @@ img {
 .container {
   width: 90vw;
   margin: 0 auto;
+  margin-top: 60px;
 }
 
 .row {
@@ -27,16 +29,20 @@ img {
 }
 
 .cell {
-  background: black;
+  background:#7C7A7A
 }
 
 .cell.active {
-  background: red;
+  background: #adb0b0
 }
 
 
 .armed{
-  background: green;
+  background: #FF5D73;
+}
+
+.active.armed {
+  background: red;
 }
 
 
