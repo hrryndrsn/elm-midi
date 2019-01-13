@@ -4,18 +4,18 @@ import registerServiceWorker from './registerServiceWorker';
 import {Howl, Howler} from 'howler';
 
 
-const kick = new Howl({src: ['assets/kick.wav']});
-const snare = new Howl({src: ['assets/snare.wav']});
-const hat = new Howl({src: ['assets/hat.wav']});
-const perc = new Howl({src: ['assets/perc.wav']});
-const perc1 = new Howl({src: ['assets/perc1.wav']});
-const perc2 = new Howl({src: ['assets/perc2.wav']});
-const perc3 = new Howl({src: ['assets/perc3.wav']});
-const perc4 = new Howl({src: ['assets/perc4.wav']});
-const fx1 = new Howl({src: ['assets/fx1.wav']});
-const lowWomp = new Howl({src: ['assets/low-womp.wav']});
-const highWomp = new Howl({src: ['assets/high-womp.wav']});
-const tick = new Howl({src: ['assets/tick.wav']});
+const kick = new Howl({src:["assets/kick.wav"]});
+const snare = new Howl({src: ['static/assets/snare.wav']});
+const hat = new Howl({src: ['static/assets/hat.wav']});
+const perc = new Howl({src: ['static/assets/perc.wav']});
+const perc1 = new Howl({src: ['static/assets/perc1.wav']});
+const perc2 = new Howl({src: ['static/assets/perc2.wav']});
+const perc3 = new Howl({src: ['static/assets/perc3.wav']});
+const perc4 = new Howl({src: ['static/assets/perc4.wav']});
+const fx1 = new Howl({src: ['static/assets/fx1.wav']});
+const lowWomp = new Howl({src: ['static/assets/low-womp.wav']});
+const highWomp = new Howl({src: ['static/assets/high-womp.wav']});
+const tick = new Howl({src: ['static/assets/tick.wav']});
  
 
 

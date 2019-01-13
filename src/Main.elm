@@ -3,8 +3,8 @@ port module Main exposing (Model, Msg(..), init, main, playSound, subscriptions,
 import Array
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (class, id)
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (class, id, max, min, type_, value)
+import Html.Events exposing (onClick, onInput)
 import Json.Decode as Decode
 import Json.Encode as E
 import Task
@@ -52,6 +52,7 @@ type alias Row =
 type alias Model =
     { zone : Time.Zone
     , time : Time.Posix
+    , bpm : Int
     , beat : Int
     , rows : List Row
     , counter : Int
@@ -62,6 +63,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( Model Time.utc
         (Time.millisToPosix 0)
+        200
         0
         [ initRow 0 "kick"
         , initRow 1 "snare"
@@ -113,11 +115,24 @@ type Msg
     | AdjustTimeZone Time.Zone
     | SendPlaySound (List String)
     | ArmCell Int Int
+    | UpdateBpm String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        UpdateBpm str ->
+            let
+                newBpm =
+                    case String.toInt str of
+                        Just n ->
+                            n
+
+                        Nothing ->
+                            0
+            in
+            ( { model | bpm = newBpm }, Cmd.none )
+
         Tick newTime ->
             let
                 newBeat =
@@ -302,7 +317,19 @@ checkCell c beat =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 125 Tick
+    Time.every (interval model.bpm) Tick
+
+
+interval : Int -> Float
+interval bpm =
+    let
+        minf =
+            toFloat 60000
+
+        bpmf =
+            toFloat bpm
+    in
+    (minf / bpmf) / 4.0
 
 
 
@@ -312,7 +339,18 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "container" ]
-        [ renderRows model.rows model.beat
+        [ div []
+            [ input
+                [ type_ "range"
+                , min "0"
+                , max "300"
+                , value <| String.fromInt model.bpm
+                , onInput UpdateBpm
+                ]
+                []
+            , text <| "derp"
+            ]
+        , renderRows model.rows model.beat
         ]
 
 
