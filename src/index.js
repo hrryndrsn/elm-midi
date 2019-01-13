@@ -4,28 +4,20 @@ import registerServiceWorker from './registerServiceWorker';
 import {Howl, Howler} from 'howler';
 
 
-// const perc1 = new Audio("./assets/perc1.wav")
-// const hat = new Audio("./assets/hat.wav")
-// const perc = new Audio("./assets/perc.wav")
-// const snare = new Audio("./assets/snare.wav")
-// const perc2 = new Audio("./assets/perc2.wav")
-// const perc3 = new Audio("./assets/perc3.wav")
-// const perc4 = new Audio("./assets/perc4.wav")
-// const fx1 = new Audio("./assets/fx1.wav")
-
-const kick = new Howl({src: ['./assets/kick.wav']});
-const snare = new Howl({src: ['./assets/snare.wav']});
-const hat = new Howl({src: ['./assets/hat.wav']});
-const perc = new Howl({src: ['./assets/perc.wav']});
-const perc1 = new Howl({src: ['./assets/perc1.wav']});
-const perc2 = new Howl({src: ['./assets/perc2.wav']});
-const perc3 = new Howl({src: ['./assets/perc3.wav']});
-const perc4 = new Howl({src: ['./assets/perc4.wav']});
-const fx1 = new Howl({src: ['./assets/fx1.wav']});
-const lowWomp = new Howl({src: ['./assets/low-womp.wav']});
-const highWomp = new Howl({src: ['./assets/high-womp.wav']});
-const tick = new Howl({src: ['./assets/tick.wav']});
+const kick = new Howl({src: ['assets/kick.wav']});
+const snare = new Howl({src: ['assets/snare.wav']});
+const hat = new Howl({src: ['assets/hat.wav']});
+const perc = new Howl({src: ['assets/perc.wav']});
+const perc1 = new Howl({src: ['assets/perc1.wav']});
+const perc2 = new Howl({src: ['assets/perc2.wav']});
+const perc3 = new Howl({src: ['assets/perc3.wav']});
+const perc4 = new Howl({src: ['assets/perc4.wav']});
+const fx1 = new Howl({src: ['assets/fx1.wav']});
+const lowWomp = new Howl({src: ['assets/low-womp.wav']});
+const highWomp = new Howl({src: ['assets/high-womp.wav']});
+const tick = new Howl({src: ['assets/tick.wav']});
  
+
 
 window.addEventListener("load", (e) => {
   console.log(e)
@@ -34,8 +26,7 @@ window.addEventListener("load", (e) => {
 const switchSample = (str) => {
   switch (str) {
     case "kick":
-    // const kick = new Audio("./assets/kick.wav")
-      kick.play();
+      kick.play()
       break
     case "snare":
       snare.play()
