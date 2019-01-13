@@ -123,13 +123,23 @@ update msg model =
     case msg of
         UpdateBpm str ->
             let
+                empty =
+                    if str == "" then
+                        True
+
+                    else
+                        False
+
                 newBpm =
                     case String.toInt str of
                         Just n ->
-                            n
+                            limitBpm n
 
                         Nothing ->
                             0
+
+                throwAway =
+                    Debug.log "derp->" empty
             in
             ( { model | bpm = newBpm }, Cmd.none )
 
@@ -236,6 +246,18 @@ update msg model =
             )
 
 
+limitBpm : Int -> Int
+limitBpm int =
+    if int > 300 then
+        300
+
+    else if int < 1 then
+        1
+
+    else
+        int
+
+
 firePlaySound : String -> Cmd msg
 firePlaySound str =
     playSound str
@@ -328,8 +350,16 @@ interval bpm =
 
         bpmf =
             toFloat bpm
+
+        inter =
+            (minf / bpmf) / 4.0
     in
-    (minf / bpmf) / 4.0
+    case bpm < 1 of
+        True ->
+            1000
+
+        False ->
+            inter
 
 
 
@@ -339,18 +369,26 @@ interval bpm =
 view : Model -> Html Msg
 view model =
     div [ class "container" ]
-        [ div []
-            [ input
-                [ type_ "range"
-                , min "0"
+        [ renderControls model
+        , renderRows model.rows model.beat
+        ]
+
+
+renderControls : Model -> Html Msg
+renderControls model =
+    div [ class "controls" ]
+        [ div [ class "bpmGroup" ]
+            [ p [ class "bpmLabel" ] [ text "bpm" ]
+            , input
+                [ class "bpmInput"
+                , type_ "number"
+                , min "1"
                 , max "300"
                 , value <| String.fromInt model.bpm
                 , onInput UpdateBpm
                 ]
                 []
-            , text <| "derp"
             ]
-        , renderRows model.rows model.beat
         ]
 
 
@@ -376,7 +414,10 @@ cell rowId cl activeCell =
 
 renderCellClass : Int -> Int -> Bool -> String
 renderCellClass index activeCell armed =
-    if armed == True then
+    if armed == True && index == activeCell then
+        "cell armed active"
+
+    else if armed == True then
         "cell armed"
 
     else if index == activeCell then

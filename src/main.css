@@ -18,6 +18,7 @@ img {
   width: 90vw;
   margin: 0 auto;
   margin-top: 60px;
+  margin-bottom: 100px;
 }
 
 .row {
@@ -38,11 +39,49 @@ img {
 
 
 .armed{
-  background: #FF5D73;
+  background: #55efc4;
+  /* background: #FF5D73; */
 }
 
 .active.armed {
-  background: red;
+  background: #00b894
 }
 
 
+/* controls  */
+.controls {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr
+}
+
+.bpmLabel {
+  font-size: 24px;
+  margin: 0;
+  line-height: 32px;
+  color: white;
+  text-align: left;
+}
+
+.bpmGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  margin-bottom: 50px;
+  width: 120px;
+}
+
+.bpmInput {
+  background: none;
+  font-size: 24px;
+  outline: none;
+  border: none;
+  height: 32px;
+  color: #55efc4
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0
+}
