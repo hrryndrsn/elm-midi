@@ -369,8 +369,8 @@ interval bpm =
 view : Model -> Html Msg
 view model =
     div [ class "container" ]
-        [ renderControls model
-        , renderRows model.rows model.beat
+        [ renderRows model.rows model.beat
+        , renderControls model
         ]
 
 

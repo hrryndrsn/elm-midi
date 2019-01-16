@@ -4,7 +4,7 @@ import registerServiceWorker from './registerServiceWorker';
 import {Howl, Howler} from 'howler';
 
 
-const kick = new Howl({src:["static/assets/kick.wav"]});
+const kick = new Howl({src:["assets/kick.wav"]});
 const snare = new Howl({src: ['static/assets/snare.wav']});
 const hat = new Howl({src: ['static/assets/hat.wav']});
 const perc = new Howl({src: ['static/assets/perc.wav']});

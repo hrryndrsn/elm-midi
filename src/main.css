@@ -17,8 +17,8 @@ img {
 .container {
   width: 90vw;
   margin: 0 auto;
-  margin-top: 60px;
-  margin-bottom: 100px;
+  margin-top: 40px;
+  margin-bottom: 50px;
 }
 
 .row {
@@ -30,11 +30,12 @@ img {
 }
 
 .cell {
-  background:#7C7A7A
+  background:#7C7A7A;
 }
 
 .cell.active {
-  background: #adb0b0
+  background: #adb0b0;
+
 }
 
 
@@ -44,13 +45,14 @@ img {
 }
 
 .active.armed {
-  background: #00b894
+  background: #00b894;
 }
 
 
 /* controls  */
 .controls {
   width: 100%;
+  margin-top: 40px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr
 }
@@ -84,4 +86,15 @@ input::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
     margin: 0
+}
+
+@media (max-width: 500px) {
+  .container {
+    margin-top: 20px;
+    width: 90vw;
+  }
+  
+  .row {
+    height: 42px;
+  }
 }
